@@ -1,6 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Nav } from 'react-bootstrap';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, useReactFlow, ReactFlowProvider } from '@xyflow/react';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, useReactFlow, ReactFlowProvider} from '@xyflow/react';
+import type {
+  Node,
+  Edge,
+  OnNodesChange,
+  OnEdgesChange,
+  OnConnect,
+} from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -13,22 +20,26 @@ const initialEdges = [{ id: 'e1', source: 'n1', target: 'n2' }];
 type MenuClass = { class: string };
 
 function FlowArea() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [nodes, setNodes] = useState<Node[]>(initialNodes);
+  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+
   const { screenToFlowPosition  } = useReactFlow();
 
-  const onNodesChange = useCallback(
+  const onNodesChange: OnNodesChange = useCallback(
     (changes) => setNodes((ns) => applyNodeChanges(changes, ns)),
     []
   );
-  const onEdgesChange = useCallback(
+
+  const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => setEdges((es) => applyEdgeChanges(changes, es)),
     []
   );
-  const onConnect = useCallback(
+
+  const onConnect: OnConnect = useCallback(
     (params) => setEdges((es) => addEdge(params, es)),
     []
-  );  
+  );
+
   
   const getId = () => `node_${+new Date()}`;
 
