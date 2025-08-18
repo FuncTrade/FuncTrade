@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Nav } from 'react-bootstrap';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, useReactFlow, ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -12,9 +12,10 @@ const initialEdges = [{ id: 'e1', source: 'n1', target: 'n2' }];
 
 type MenuClass = { class: string };
 
-export default function App() {
+function FlowArea() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
+  const { screenToFlowPosition  } = useReactFlow();
 
   const onNodesChange = useCallback(
     (changes) => setNodes((ns) => applyNodeChanges(changes, ns)),
@@ -27,7 +28,49 @@ export default function App() {
   const onConnect = useCallback(
     (params) => setEdges((es) => addEdge(params, es)),
     []
-  );
+  );  
+  
+  const getId = () => `node_${+new Date()}`;
+
+  const onDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
+
+  const onDrop = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+
+    const name = event.dataTransfer.getData("application/reactflow");
+    if (!name) return;
+
+    // 计算鼠标在画布上的位置
+    const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+
+    const newNode = {
+      id: getId(),
+      position,
+      data: { label: name },
+    };
+
+    setNodes((nds) => nds.concat(newNode));
+  }, [screenToFlowPosition]);
+
+  return (
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      fitView
+      onDrop={onDrop}
+      onDragOver={onDragOver}
+    />
+  )
+}
+
+export default function App() {
+  
 
   const [menuClasses, setMenuClasses] = useState<MenuClass[]>([]);
 
@@ -51,23 +94,28 @@ export default function App() {
   }, []);
 
   return (
-    <div className="position-relative vw-100 vh-100">
+    <div
+      className="position-relative vw-100 vh-100"
+    >
       {/* ReactFlow 全屏 */}
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        fitView
-      />
+      <ReactFlowProvider>
+        <FlowArea />
+      </ReactFlowProvider>
 
       {/* 左侧浮动导航（Bootstrap 类） */}
       <div className="position-absolute top-0 start-0 h-100 bg-light border-end p-3" style={{ width: 240, zIndex: 10 }}>
         <h5>Menu</h5>
         <Nav className="flex-column">
           {menuClasses.map((item, idx) => (
-            <Nav.Link key={idx} href={`#${item.class}`}>
+            <Nav.Link
+              key={idx}
+              href={`#${item.class}`}
+              draggable
+              onDragStart={(event) => {
+                event.dataTransfer.setData("application/reactflow", item.class);
+                event.dataTransfer.effectAllowed = "move";
+              }}
+            >
               {item.class}
             </Nav.Link>
           ))}
