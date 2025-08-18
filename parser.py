@@ -15,6 +15,8 @@ class ClassInfo(BaseModel):
     methods: list[Method]
 
 class Pipeline:
+    edges: List[Tuple]
+
     def __init__(self):
         self.edges = []
 
