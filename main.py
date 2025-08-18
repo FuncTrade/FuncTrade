@@ -1,8 +1,22 @@
-from typing import Union
-from fastapi import FastAPI
+from typing import List
 
-app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {}
+class DataFeed:
+    pass
+
+class Actor:
+    pass
+
+def signal_generate():
+    pass
+
+
+class Pipeline:
+    pass
+
+
+pipeline = DataFeed >> signal_generate >> Actor
+
+
+def play_pipeline(pipeline: List):
+    pass
