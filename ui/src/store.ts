@@ -30,3 +30,13 @@ export const useFlowStore = create<FlowStore>((set, get) => ({
     set({ edges: addEdge(params, get().edges) });
   },
 }));
+
+type ClassStore = { 
+  classes: string[]; 
+  setClasses: (classes: string[]) => void
+};
+
+export const useMenuClass = create<ClassStore>((set) => ({
+  classes: [],
+  setClasses: (classes) => set({ classes })
+}))
