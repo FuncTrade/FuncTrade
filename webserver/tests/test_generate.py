@@ -1,6 +1,5 @@
 from unittest import TestCase
 from webserver.generate import generate_pipeline_code, InstanceDef, InstanceCall
-from pathlib import Path
 
 
 class TestGenerate(TestCase):
@@ -14,8 +13,8 @@ class TestGenerate(TestCase):
         }
         classes = [InstanceDef.from_dict(d) for d in data["classes"]]
         edges = [InstanceCall.from_dict(e) for e in data["edges"]]
-        
-        code = generate_pipeline_code(classes, edges, Path("pipeline_exec.py"))
+
+        code = generate_pipeline_code(classes, edges)
         
         desired_output = ""
         

@@ -32,7 +32,7 @@ class InstanceCall:
         )
 
 
-def generate_pipeline_code(classes: Sequence[InstanceDef], edges: Sequence[InstanceCall], output_path: Path):
+def generate_pipeline_code(classes: Sequence[InstanceDef], edges: Sequence[InstanceCall]) -> str:
     """
     Example:
 
@@ -67,6 +67,6 @@ def generate_pipeline_code(classes: Sequence[InstanceDef], edges: Sequence[Insta
         lines.append(f"{left.lower()} >> {right.lower()}")
 
     code = "\n".join(lines)
-    output_path.write_text(code, encoding="utf-8")
+
     return code
     
