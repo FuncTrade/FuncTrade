@@ -13,8 +13,6 @@ export function useLoadPipeline() {
 
     if (path == undefined || path.trim() == "") return
 
-    console.log("this")
-
     fetch('/api/parse_code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

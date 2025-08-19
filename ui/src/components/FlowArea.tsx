@@ -37,6 +37,7 @@ export default function FlowArea() {
       fitView
       onDrop={onDrop}
       onDragOver={onDragOver}
+      deleteKeyCode={['Delete', 'Backspace']} // ✅ 指定哪些键触发删除
     />
   );
 }
