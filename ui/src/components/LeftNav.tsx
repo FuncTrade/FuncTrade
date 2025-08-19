@@ -56,18 +56,34 @@ export default function LeftNav() {
           <h5>Default Classes</h5>
           <Nav className="flex-column">
             {default_classes.map((item, idx) => (
-              <Nav.Link key={idx} href={`#${item}`} draggable>
-                {item}
-              </Nav.Link>
+                <Nav.Link
+                    key={idx}
+                    href={`#${item}`}
+                    draggable
+                    onDragStart={(event) => {
+                        event.dataTransfer.setData('application/reactflow', item);
+                        event.dataTransfer.effectAllowed = 'move';
+                    }}
+                    >
+                    {item}
+                </Nav.Link>
             ))}
           </Nav>
 
           <h5>Classes</h5>
           <Nav className="flex-column">
             {classes.map((item, idx) => (
-              <Nav.Link key={idx} href={`#${item}`} draggable>
-                {item}
-              </Nav.Link>
+                <Nav.Link
+                    key={idx}
+                    href={`#${item}`}
+                    draggable
+                    onDragStart={(event) => {
+                        event.dataTransfer.setData('application/reactflow', item);
+                        event.dataTransfer.effectAllowed = 'move';
+                    }}
+                    >
+                    {item}
+                </Nav.Link>
             ))}
           </Nav>
         </div>
