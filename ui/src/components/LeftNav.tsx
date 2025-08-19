@@ -1,5 +1,5 @@
 import { Nav } from 'react-bootstrap';
-import { useMenuClass } from './store';
+import { useMenuClass } from '../store';
 
 export default function LeftNav() {
     const classes = useMenuClass(state => state.classes);

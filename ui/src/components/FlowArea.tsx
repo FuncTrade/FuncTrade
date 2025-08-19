@@ -2,7 +2,7 @@ import {
   ReactFlow,
   useReactFlow,
 } from '@xyflow/react';
-import { useFlowStore } from './store';
+import { useFlowStore } from '../store';
 
 
 export default function FlowArea() {

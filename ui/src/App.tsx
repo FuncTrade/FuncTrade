@@ -1,8 +1,8 @@
 import { ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FlowArea from './FlowArea';
-import LeftNav from './LeftNav';
+import FlowArea from './components/FlowArea';
+import LeftNav from './components/LeftNav';
 import { loadPipeline } from './hooks/loadPipeline';
 
 export default function App() {
