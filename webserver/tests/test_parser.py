@@ -6,7 +6,7 @@ import pathlib
 
 class TestParser(TestCase):
     def test_parse_py(self):
-        example_path = os.path.relpath('tests/example_model.py')
+        example_path = os.path.relpath('webserver/tests/example_model.py')
         example_path = pathlib.Path(example_path)
         results = parse_py(example_path)
 
@@ -14,7 +14,7 @@ class TestParser(TestCase):
         self.assertEqual([c.qualname for c in results], ['DataFeed','Actor'])
     
     def test_parse_pipeline(self):
-        example_path = os.path.relpath('tests/example_model.py')
+        example_path = os.path.relpath('webserver/tests/example_model.py')
         example_path = pathlib.Path(example_path)
         results = parse_pipeline(example_path)
 
