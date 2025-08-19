@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from webserver.parser import parse_py, parse_pipeline
+from webserver.parser import parse_py, parse_pipeline, search_target_dir
 from pydantic import BaseModel
 import pathlib
 from typing import Dict
@@ -24,9 +24,15 @@ def parse_code(class_path: ClassPath):
 
     return {"classes": class_names, "edges": edges}
 
-@app.get('/api/default_class_path')
-def get_default_class_path() -> Dict:
+@app.get('/api/default_classes')
+def get_default_classes() -> Dict:
     current_path = pathlib.Path(__file__).resolve()
     function_path = current_path.parent.parent.joinpath('function')
+    default_classes = []
 
-    return {"default_function_path": function_path}
+    for p in search_target_dir(function_path):
+        default_classes.extend(parse_py(p))
+
+    class_names = [{"class": c.qualname} for c in default_classes]
+
+    return {"default_classes": class_names}

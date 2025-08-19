@@ -2,7 +2,7 @@ import { Nav, Form } from 'react-bootstrap';
 import { useClassStore, usePathStore } from '../store';
 
 export default function LeftNav() {
-    const classes = useClassStore(state => state.classes);
+    const { classes, default_classes} = useClassStore();
     const { class_path, pipeline_path, setClassPath, setPipelinePath } = usePathStore();
 
     return (
@@ -30,6 +30,23 @@ export default function LeftNav() {
                     onBlur={(e) => setPipelinePath(e.target.value)}
                 />
             </Form.Group>
+
+            <h5>Default Classes</h5>
+            <Nav className="flex-column">
+            {default_classes.map((item, idx) => (
+                <Nav.Link
+                key={idx}
+                href={`#${item}`}
+                draggable
+                onDragStart={(event) => {
+                    event.dataTransfer.setData('application/reactflow', item);
+                    event.dataTransfer.effectAllowed = 'move';
+                }}
+                >
+                {item}
+                </Nav.Link>
+            ))}
+            </Nav>
 
             <h5>Classes</h5>
             <Nav className="flex-column">

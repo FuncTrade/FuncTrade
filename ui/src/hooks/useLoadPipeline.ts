@@ -36,6 +36,6 @@ export function useLoadPipeline() {
 
         setClasses(data.classes.map((c: {class: string}) => c.class));
       })
-      .catch((err) => console.error('加载菜单失败', err));
+      .catch((err) => console.error('Failed loading pipeline', err));
   }, [pipeline_path, setNodes, setEdges, setClasses]);
 }

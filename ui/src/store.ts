@@ -34,17 +34,23 @@ export const useFlowStore = create<FlowStore>((set, get) => ({
 
 type ClassStore = { 
   classes: string[]; 
+  default_classes: string[];
   setClasses: (classes: string[]) => void
+  setDefaultClasses: (default_classes: string[]) => void
 };
 
 export const useClassStore = create<ClassStore>((set) => ({
   classes: [],
-  setClasses: (classes) => set({ classes })
+  default_classes: [],
+  setClasses: (classes) => set({ classes }),
+  setDefaultClasses: (default_classes) => set({ default_classes }),
 }))
 
 type PathStore = {
+  default_class_path: string;
   class_path: string;
   pipeline_path: string;
+  setDefaultClassPath: (path: string) => void;
   setClassPath: (path: string) => void;
   setPipelinePath: (path: string) => void;
 }
@@ -52,10 +58,12 @@ type PathStore = {
 export const usePathStore = create<PathStore>()(
   persist(
   (set) => ({
+    default_class_path: "",
     class_path: "",
     pipeline_path: "",
     setClassPath: (path) => {set({class_path: path})},
-    setPipelinePath(path) {set({pipeline_path: path})},
+    setPipelinePath: (path) => {set({pipeline_path: path})},
+    setDefaultClassPath: (path) => {set({default_class_path: path})},
   }),
   {
     name: "path-storage",

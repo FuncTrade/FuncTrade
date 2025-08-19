@@ -27,8 +27,7 @@ class Pipeline:
     def __repr__(self):
         return f"Pipeline(edges={self.edges})"
 
-def search_target_dir(dir_path: str) -> List[Path]:
-    target_dir = Path(dir_path)
+def search_target_dir(target_dir: Path) -> List[Path]:
     if not target_dir.exists() or not target_dir.is_dir():
         return []
     return list(target_dir.rglob("*.py"))

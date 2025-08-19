@@ -4,9 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import FlowArea from './components/FlowArea';
 import LeftNav from './components/LeftNav';
 import { useLoadPipeline } from './hooks/useLoadPipeline';
+import { useDefaultClass } from './hooks/useDefaultClass';
 
 export default function App() {
   useLoadPipeline()
+  useDefaultClass()
 
   return (
     <div className="position-relative vw-100 vh-100">
