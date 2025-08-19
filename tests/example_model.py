@@ -1,4 +1,4 @@
-from func.base import AbstractTask
+from function.base import AbstractTask
 
 class DataFeed(AbstractTask):
     pass
