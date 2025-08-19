@@ -1,12 +1,20 @@
 // hooks/useLoadPipeline.ts
 import { useEffect } from 'react';
-import { useFlowStore, useMenuClass } from '../store';
+import { useFlowStore, useClassStore, usePathStore } from '../store';
 
-export function loadPipeline(path: string) {
+export function useLoadPipeline() {
+  const { pipeline_path } = usePathStore();
+
   const { setNodes, setEdges } = useFlowStore();
-  const { setClasses } = useMenuClass();
+  const { setClasses } = useClassStore();
 
   useEffect(() => {
+    const path = pipeline_path;
+
+    if (path == undefined || path.trim() == "") return
+
+    console.log("this")
+
     fetch('/api/parse_code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -31,5 +39,5 @@ export function loadPipeline(path: string) {
         setClasses(data.classes.map((c: {class: string}) => c.class));
       })
       .catch((err) => console.error('加载菜单失败', err));
-  }, [path, setNodes, setEdges, setClasses]);
+  }, [pipeline_path, setNodes, setEdges, setClasses]);
 }

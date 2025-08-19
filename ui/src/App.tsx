@@ -3,12 +3,10 @@ import '@xyflow/react/dist/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FlowArea from './components/FlowArea';
 import LeftNav from './components/LeftNav';
-import { loadPipeline } from './hooks/loadPipeline';
+import { useLoadPipeline } from './hooks/useLoadPipeline';
 
 export default function App() {
-  const path = 'D:/git/FuncTrade/webserver/tests/example_model.py';
-
-  loadPipeline(path)
+  useLoadPipeline()
 
   return (
     <div className="position-relative vw-100 vh-100">

@@ -36,7 +36,21 @@ type ClassStore = {
   setClasses: (classes: string[]) => void
 };
 
-export const useMenuClass = create<ClassStore>((set) => ({
+export const useClassStore = create<ClassStore>((set) => ({
   classes: [],
   setClasses: (classes) => set({ classes })
+}))
+
+type PathStore = {
+  class_path: string;
+  pipeline_path: string;
+  setClassPath: (path: string) => void;
+  setPipelinePath: (path: string) => void;
+}
+
+export const usePathStore = create<PathStore>((set) => ({
+  class_path: "",
+  pipeline_path: "",
+  setClassPath: (path) => {set({class_path: path})},
+  setPipelinePath(path) {set({pipeline_path: path})},
 }))
