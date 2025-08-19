@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="80mm"
+   height="80mm"
+   viewBox="0 0 80 80.000001"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="绘图.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.1956853"
+     inkscape:cx="307.35511"
+     inkscape:cy="74.016129"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="-11"
+     inkscape:window-y="49"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showgrid="false">
+    <inkscape:grid
+       id="grid5"
+       units="mm"
+       originx="-43.092266"
+       originy="-45.824699"
+       spacingx="1"
+       spacingy="0.99999998"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect5"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,5.1477796,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-43.092265,-45.824698)">
+    <circle
+       style="fill:#162b52;fill-opacity:1;stroke-width:0.264583"
+       id="path1-8"
+       cx="74.379288"
+       cy="106.52376"
+       r="10.480027" />
+    <circle
+       style="fill:#162b52;fill-opacity:1;stroke-width:0.264583"
+       id="path1-8-1"
+       cx="54.236137"
+       cy="70.592239"
+       r="10.480027" />
+    <circle
+       style="fill:#162b52;fill-opacity:1;stroke-width:0.264583"
+       id="path1-8-1-2"
+       cx="112.45827"
+       cy="106.85535"
+       r="10.480027" />
+    <path
+       style="fill:#00ccff;fill-opacity:1;stroke:#162b52;stroke-width:4.165;stroke-dasharray:none;stroke-opacity:1"
+       d="M 46.192641,69.653687 H 80.845934"
+       id="path4" />
+    <path
+       style="fill:#00ccff;fill-opacity:1;stroke:#162b52;stroke-width:4.165;stroke-dasharray:none;stroke-opacity:1"
+       d="M 74.253145,106.63564 79.985794,71.42303"
+       id="path4-2-6"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#162b52;stroke-width:4.165;stroke-dasharray:none;stroke-opacity:1"
+       d="m 79.302334,58.264285 0.02538,8.387953 c 0.0086,2.843027 1.265283,7.089627 3.010154,9.333383 11.391824,14.648923 19.923966,11.073538 30.077986,17.834077 v -0.139819"
+       id="path5"
+       sodipodi:nodetypes="cccc"
+       inkscape:path-effect="#path-effect5"
+       inkscape:original-d="m 79.302334,58.264285 0.04095,13.535709 c 12.935947,19.523261 22.048376,14.679803 33.072566,22.019704 v -0.139819"
+       transform="translate(0.66384522,14.287503)" />
+    <circle
+       style="fill:#ffffff;fill-opacity:1;stroke:#162b52;stroke-width:2.965;stroke-dasharray:none;stroke-opacity:1"
+       id="path1"
+       cx="80.054993"
+       cy="70.543495"
+       r="10.480027" />
+  </g>
+</svg>
