@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 import ast, pathlib, os
 from typing import Tuple, List
+from pathlib import Path
 
 
 class Method(BaseModel):
@@ -26,7 +27,13 @@ class Pipeline:
     def __repr__(self):
         return f"Pipeline(edges={self.edges})"
 
-def parse_py(path: pathlib.Path) -> list[ClassInfo]:
+def search_target_dir(dir_path: str) -> List[Path]:
+    target_dir = Path(dir_path)
+    if not target_dir.exists() or not target_dir.is_dir():
+        return []
+    return list(target_dir.rglob("*.py"))
+
+def parse_py(path: Path) -> list[ClassInfo]:
     src = path.read_text(encoding="utf-8", errors="ignore")
     tree = ast.parse(src, filename=str(path))
     out = []
@@ -48,7 +55,7 @@ def parse_py(path: pathlib.Path) -> list[ClassInfo]:
     return out
 
 
-def parse_pipeline(path: pathlib.Path) -> Pipeline:
+def parse_pipeline(path: Path) -> Pipeline:
     pipe = Pipeline()
     src = path.read_text(encoding="utf-8", errors="ignore")
     tree = ast.parse(src, filename=str(path))

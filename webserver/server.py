@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from webserver.parser import parse_py, parse_pipeline
 from pydantic import BaseModel
 import pathlib
+from typing import Dict
 
 class ClassPath(BaseModel):
     path: str
@@ -22,3 +23,10 @@ def parse_code(class_path: ClassPath):
     edges = parse_pipeline(input_path).edges
 
     return {"classes": class_names, "edges": edges}
+
+@app.get('/api/default_class_path')
+def get_default_class_path() -> Dict:
+    current_path = pathlib.Path(__file__).resolve()
+    function_path = current_path.parent.parent.joinpath('function')
+
+    return {"default_function_path": function_path}
