@@ -1,5 +1,6 @@
 // store.ts
 import { create } from 'zustand';
+import { persist, createJSONStorage  } from "zustand/middleware";
 import { applyNodeChanges, applyEdgeChanges, addEdge} from '@xyflow/react';
 import type {
     Node, Edge, OnNodesChange, OnEdgesChange, OnConnect 
@@ -48,9 +49,16 @@ type PathStore = {
   setPipelinePath: (path: string) => void;
 }
 
-export const usePathStore = create<PathStore>((set) => ({
-  class_path: "",
-  pipeline_path: "",
-  setClassPath: (path) => {set({class_path: path})},
-  setPipelinePath(path) {set({pipeline_path: path})},
-}))
+export const usePathStore = create<PathStore>()(
+  persist(
+  (set) => ({
+    class_path: "",
+    pipeline_path: "",
+    setClassPath: (path) => {set({class_path: path})},
+    setPipelinePath(path) {set({pipeline_path: path})},
+  }),
+  {
+    name: "path-storage",
+    storage: createJSONStorage(() => sessionStorage),
+  }
+))
