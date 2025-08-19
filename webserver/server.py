@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from parser import parse_py, parse_pipeline
+from webserver.parser import parse_py, parse_pipeline
 from pydantic import BaseModel
 import pathlib
 

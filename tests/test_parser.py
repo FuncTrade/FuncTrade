@@ -1,5 +1,5 @@
 from unittest import TestCase
-from parser import parse_py, parse_pipeline
+from webserver.parser import parse_py, parse_pipeline
 import os
 import pathlib
 
