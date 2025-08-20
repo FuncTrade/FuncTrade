@@ -1,27 +1,9 @@
 from abc import abstractmethod
-from dataclasses import dataclass
 import datetime
 
 from typing import Any, List, Union
 
-
-@dataclass
-class Signal:
-    action: str # buy/sell
-    timestamp: datetime.datetime
-
-
-@dataclass
-class Data:
-    timestamp: datetime.datetime
-    ticker: str
-    label: str
-    value: float
-
-
-@dataclass
-class DataList:
-    data_list: List[Data]
+from function.data_type import Data, DataList, Signal
 
 
 class TradeLogger:
