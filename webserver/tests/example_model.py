@@ -1,9 +1,9 @@
-from function.base import AbstractTask
+from function.base import GenericTask
 
-class DataFeed(AbstractTask):
+class DataFeed(GenericTask):
     pass
 
-class Actor(AbstractTask):
+class Actor(GenericTask):
     pass
 
 d1 = DataFeed()

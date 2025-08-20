@@ -1,4 +1,4 @@
-from function.base import TradeLogger
+from function.act import TradeLogger
 
 import matplotlib.pyplot as plt
 import numpy as np

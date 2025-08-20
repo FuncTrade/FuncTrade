@@ -1,66 +1,28 @@
 from abc import abstractmethod
-import datetime
-
-from typing import Any, List, Union
-
-from function.data_type import Data, DataList, Signal
+from typing import Union, Tuple, TypeVar, Generic
 
 
-class TradeLogger:
-    data: List[Data]
-    signal: List[Signal]
+class GenericData:
+    pass
 
-    def __init__(self) -> None:
-        self.data = []
-        self.signal = []
+InputT = TypeVar("InputT")
+OutputT = TypeVar("OutputT")
 
-    def log_info(self, info: Union[Data, DataList, Signal, None]) -> None:
-        if isinstance(info, Data):
-            self.data.append(info)
-        elif isinstance(info, DataList):
-            self.data.extend(info.data_list)
-        elif isinstance(info, Signal):
-            self.signal.append(info)
-        elif info is None:
-            return
-        else:
-            raise Exception("Unsupport data type: {}".format(type(info)))
-
-    @abstractmethod
-    def export(self) -> Any:
-        pass
-
-
-class DataGenerator:
-    start_at: datetime.datetime
-    end_at: datetime.datetime
-
-    def __init__(self, start_at: datetime.datetime, end_at: datetime.datetime) -> None:
-        self.start_at = start_at
-        self.end_at = end_at
-
-    @abstractmethod
-    def __next__(self) -> Union[Data, DataList, None]:
-        pass
-
-
-class Trader:
-    @abstractmethod
-    def signal_act(self, signal: Signal) -> None:
-        pass
-
-
-class Processor:
-    @abstractmethod
-    def process(self, data: Union[Data, DataList]) -> Union[DataList, Signal, None]:
-        pass
-
-
-class AbstractTask:
-    def __rshift__(self, other):
+class GenericTask(Generic[InputT, OutputT]):
+    def __rshift__(self, other) -> Tuple['GenericTask', 'GenericTask']:
         print(f"{self} >> {other}")
         return (self, other)   # 记录调用关系
 
-    def __lshift__(self, other):
+    def __lshift__(self, other) -> Tuple['GenericTask', 'GenericTask']:
         print(f"{self} << {other}")
         return (other, self)
+    
+    @abstractmethod
+    def process(self, input: InputT) -> OutputT:
+        pass
+
+class GenericActor(GenericTask[InputT, OutputT], Generic[InputT, OutputT]):
+    pass
+
+class GenericCalculator(GenericTask[InputT, OutputT], Generic[InputT, OutputT]):
+    pass
