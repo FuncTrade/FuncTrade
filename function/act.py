@@ -4,6 +4,7 @@ from typing import Any, List, Union
 from .base import GenericActor, GenericData
 import datetime
 import akshare as ak
+from collections import deque
 
 
 class SingleTickerDailyCloseDataGenerator(GenericActor[NoData, Union[NoData, Data]]):
@@ -35,6 +36,20 @@ class SingleTickerDailyCloseDataGenerator(GenericActor[NoData, Union[NoData, Dat
         else:
             return NoData()
 
+class DataCache(GenericActor[Data, Union[DataList, NoData]]):
+    _deque: deque
+    _max_length: int
+
+    def __init__(self, max_length: int) -> None:
+        self._deque = deque([], maxlen=max_length)
+        self._max_length = max_length
+    
+    def process(self, input: Data) -> DataList | NoData:
+        self._deque.append(input)
+        if len(self._deque) == self._max_length:
+            return DataList(list(self._deque.copy()))
+        else:
+            return NoData()
 
 class TradeLogger(GenericActor):
     data: List[Data]
