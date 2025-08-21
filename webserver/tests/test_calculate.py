@@ -1,0 +1,22 @@
+from unittest import TestCase
+from function.calculate import MACalculator
+from function.data import Data, DataList
+import datetime
+
+
+class TestMACaculator(TestCase):
+    def test_ma_calculator(self):
+        d_list = []
+        for i in range(5):
+            d_list.append(Data(timestamp=datetime.datetime.now(), ticker='Mock', label='Mock Label', value=i))
+        
+        c_d_list = DataList(d_list)
+
+        ma_cal = MACalculator()
+
+        result = ma_cal.process(c_d_list)
+
+        self.assertEqual(
+            result,
+            Data(d_list[-1].timestamp, 'Mock', 'Average', 2.0)
+        )
