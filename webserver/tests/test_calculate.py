@@ -12,11 +12,11 @@ class TestMACaculator(TestCase):
         
         c_d_list = DataList(d_list)
 
-        ma_cal = MACalculator()
+        ma_cal = MACalculator('MA')
 
         result = ma_cal.process(c_d_list)
 
         self.assertEqual(
             result,
-            Data(d_list[-1].timestamp, 'Mock', 'Average', 2.0)
+            Data(d_list[-1].timestamp, 'Mock', 'MA', 2.0)
         )

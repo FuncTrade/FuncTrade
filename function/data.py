@@ -1,8 +1,9 @@
 import datetime
 from dataclasses import dataclass
-from typing import List
-from function.base import GenericData
+from typing import List, Dict
 
+class GenericData:
+    pass
 
 @dataclass
 class Data(GenericData):
@@ -22,5 +23,10 @@ class Signal(GenericData):
 class DataList(GenericData):
     data_list: List[Data]
 
+@dataclass
 class NoData(GenericData):
     pass
+
+@dataclass
+class DataDict(GenericData):
+    data_dict: Dict[str, List[Data]]

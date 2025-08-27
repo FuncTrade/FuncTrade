@@ -1,13 +1,17 @@
-from function.data import Data, DataList, Signal, NoData
+import matplotlib.pyplot as plt
+import numpy as np
+from function.data import Data, DataList, Signal, NoData, DataDict
 from abc import abstractmethod
-from typing import Any, List, Union
-from .base import GenericActor, GenericData
+from typing import Any, List, Union, Dict
+
+from function.data import GenericData
+from .base import GenericActor, GenericSourceTask
 import datetime
 import akshare as ak
 from collections import deque
 
 
-class SingleTickerDailyCloseDataGenerator(GenericActor[NoData, Union[NoData, Data]]):
+class SingleTickerDailyCloseDataGenerator(GenericActor[NoData, Union[NoData, Data]], GenericSourceTask):
     _records: List[Data]
 
     def __init__(self, start_at: str, end_at: str, ticker: str) -> None:
@@ -36,7 +40,7 @@ class SingleTickerDailyCloseDataGenerator(GenericActor[NoData, Union[NoData, Dat
         else:
             return NoData()
 
-class DataCache(GenericActor[Data, Union[DataList, NoData]]):
+class DataListCache(GenericActor[Data, Union[DataList, NoData]]):
     _deque: deque
     _max_length: int
 
@@ -51,41 +55,74 @@ class DataCache(GenericActor[Data, Union[DataList, NoData]]):
         else:
             return NoData()
 
+class DataDictCache(GenericActor[Data, Union[DataDict, NoData]]):
+    data_dict: Dict[str, deque]
+    len_dict: Dict[str, int]
+
+    def __init__(self, len_dict: Dict[str, int]) -> None:
+        self.len_dict = len_dict.copy()
+        self.data_dict = {k: deque(maxlen=len_dict[k]) for k in len_dict.keys()}
+    
+    def process(self, input: Data) -> DataDict | NoData:
+        if input.label in self.data_dict.keys():
+            self.data_dict[input.label].append(input)
+        
+        for k in self.len_dict.keys():
+            if len(self.data_dict[k]) < self.len_dict[k]:
+                return NoData()
+        
+        out = {k: list(self.data_dict[k]) for k in self.data_dict.keys()}
+        return DataDict(out)       
+
+
 class TradeLogger(GenericActor):
     data: List[Data]
     signal: List[Signal]
+    accepted_types = (Data, DataList, Signal)
 
     def __init__(self) -> None:
         self.data = []
         self.signal = []
 
-    def log_info(self, info: Union[Data, DataList, Signal, None]) -> None:
-        if isinstance(info, Data):
-            self.data.append(info)
-        elif isinstance(info, DataList):
-            self.data.extend(info.data_list)
-        elif isinstance(info, Signal):
-            self.signal.append(info)
-        elif info is None:
-            return
+    def process(self, input: Union[Data, DataList, Signal]) -> None:
+        if isinstance(input, Data):
+            self.data.append(input)
+        elif isinstance(input, DataList):
+            self.data.extend(input.data_list)
+        elif isinstance(input, Signal):
+            self.signal.append(input)
         else:
-            raise Exception("Unsupport data type: {}".format(type(info)))
+            raise Exception("Unsupport data type: {}".format(type(input)))
 
     @abstractmethod
     def export(self) -> Any:
         pass
 
 
-class DataGenerator(GenericActor):
-    start_at: datetime.datetime
-    end_at: datetime.datetime
+class SimplePyplotLogger(TradeLogger):
+    def export(self) -> Any:
+        fig, ax = plt.subplots()
 
-    def __init__(self, start_at: datetime.datetime, end_at: datetime.datetime) -> None:
-        self.start_at = start_at
-        self.end_at = end_at
+        values = [dt.value for dt in self.data]
+        dts = [dt.timestamp for dt in self.data]
+        dts = np.array(dts)
 
-    @abstractmethod
-    def __next__(self) -> Union[Data, DataList, None]:
-        pass
+        dots = dict(zip(dts, values))
+
+        ax.plot(dts, values, 'b-', label="Price")
+
+        sig_dts = [sig.timestamp for sig in self.signal]
+        sig_values = [dots[dt] for dt in sig_dts]
+        sig_dts = np.array(sig_dts)
+
+        for i in range(len(sig_dts)):
+            action = self.signal[i].action
+            x = sig_dts[i]
+            y = sig_values[i]
+            color = 'g' if action == 'buy' else 'r'
+            ax.plot(x, y, marker='o', color=color)
+            ax.annotate(action, (x, y))
+
+        plt.show()
 
 

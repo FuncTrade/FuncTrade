@@ -1,5 +1,5 @@
 from unittest import TestCase
-from function.act import SingleTickerDailyCloseDataGenerator, DataCache
+from function.act import SingleTickerDailyCloseDataGenerator, DataListCache
 from function.data import NoData, Data, DataList
 import datetime
 
@@ -12,7 +12,7 @@ class TestSingleTickerDailyCloseDataGenerator(TestCase):
 
 class TestDataCache(TestCase):
     def test_cache_data(self):
-        data_cache = DataCache(10)
+        data_cache = DataListCache(10)
 
         for i in range(9):
             mock_data = Data(datetime.datetime.now(), 'Mock', 'Mock Label', i)
