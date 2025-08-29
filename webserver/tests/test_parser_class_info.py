@@ -8,7 +8,7 @@ import ast
 
 class TestParsePyClassInfo(TestCase):
     def test_class_info_from_def(self):
-        example_path = os.path.relpath('webserver/tests/example_instance.py')
+        example_path = os.path.relpath('webserver/tests/example_class_info.py')
         example_path = Path(example_path)
         tree = parse_file_to_tree(example_path)
 
@@ -28,7 +28,7 @@ class TestParsePyClassInfo(TestCase):
             raise
     
     def test_parse_py(self):
-        example_path = os.path.relpath('webserver/tests/example_instance.py')
+        example_path = os.path.relpath('webserver/tests/example_class_info.py')
         example_path = Path(example_path)
 
         result = parse_py(example_path)
