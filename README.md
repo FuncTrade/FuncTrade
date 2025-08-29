@@ -1,7 +1,7 @@
 # FuncTrade
 
 BackEnd:
-fastapi dev server.py
+fastapi dev webserver/server.py
 
 FrontEnd:
 cd ui
