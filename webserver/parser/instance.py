@@ -4,6 +4,8 @@ from pydantic import BaseModel
 import ast
 from pathlib import Path
 
+from webserver.parser.base import parse_file_to_tree
+
 
 class Method(BaseModel):
     name: str
@@ -18,8 +20,7 @@ class ClassInfo(BaseModel):
     methods: list[Method]
 
 def parse_py(path: Path) -> list[ClassInfo]:
-    src = path.read_text(encoding="utf-8", errors="ignore")
-    tree = ast.parse(src, filename=str(path))
+    tree = parse_file_to_tree(path)
     out = []
     for node in [n for n in tree.body if isinstance(n, ast.ClassDef)]:
         bases = [ast.unparse(b) if hasattr(ast, "unparse") else getattr(getattr(b, "id", ""), "id", "") for b in node.bases]

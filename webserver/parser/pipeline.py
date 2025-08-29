@@ -1,4 +1,5 @@
 from typing import List, Tuple
+from webserver.parser.base import parse_file_to_tree
 
 
 import ast
@@ -28,8 +29,7 @@ class Pipeline:
 
 def parse_pipeline(path: Path) -> Pipeline:
     pipe = Pipeline()
-    src = path.read_text(encoding="utf-8", errors="ignore")
-    tree = ast.parse(src, filename=str(path))
+    tree = parse_file_to_tree(path)
 
     # 1. 收集变量 -> 类名的映射
     var_to_class = {}

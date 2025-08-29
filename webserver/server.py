@@ -1,6 +1,8 @@
 from pathlib import Path
 from fastapi import FastAPI
-from webserver.parser import parse_py, parse_pipeline, search_target_dir
+from webserver.parser.instance import parse_py
+from webserver.parser.pipeline import parse_pipeline
+from webserver.parser.base import search_target_dir
 from pydantic import BaseModel
 import pathlib
 from typing import Dict, List
@@ -39,7 +41,4 @@ def get_default_classes() -> Dict:
     return {"default_classes": class_names}
 
 
-def search_target_dir(target_dir: Path) -> List[Path]:
-    if not target_dir.exists() or not target_dir.is_dir():
-        return []
-    return list(target_dir.rglob("*.py"))
+
