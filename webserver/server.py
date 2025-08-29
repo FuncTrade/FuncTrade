@@ -1,6 +1,6 @@
 from pathlib import Path
 from fastapi import FastAPI
-from webserver.parser.instance import parse_py
+from webserver.parser.class_info import parse_py
 from webserver.parser.pipeline import parse_pipeline
 from webserver.parser.base import search_target_dir
 from pydantic import BaseModel

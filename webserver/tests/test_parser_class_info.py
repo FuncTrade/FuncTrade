@@ -1,5 +1,5 @@
 from unittest import TestCase
-from webserver.parser.instance import ClassInfo, parse_py
+from webserver.parser.class_info import ClassInfo, parse_py
 from webserver.parser.base import parse_file_to_tree
 import os
 from pathlib import Path
