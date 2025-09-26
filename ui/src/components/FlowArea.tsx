@@ -6,7 +6,7 @@ import { useFlowStore } from '../store';
 
 
 export default function FlowArea() {
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, setNodes } = useFlowStore();
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, setNodes, onConnectStart } = useFlowStore();
   const { screenToFlowPosition } = useReactFlow();
 
   const getId = () => `node_${+new Date()}`;
@@ -34,6 +34,7 @@ export default function FlowArea() {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
+      onConnectStart={onConnectStart}
       fitView
       onDrop={onDrop}
       onDragOver={onDragOver}

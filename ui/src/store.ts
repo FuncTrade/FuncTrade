@@ -1,10 +1,12 @@
 // store.ts
 import { create } from 'zustand';
 import { persist, createJSONStorage  } from "zustand/middleware";
-import { applyNodeChanges, applyEdgeChanges, addEdge} from '@xyflow/react';
+import { applyNodeChanges, applyEdgeChanges, addEdge, MarkerType} from '@xyflow/react';
 import type {
-    Node, Edge, OnNodesChange, OnEdgesChange, OnConnect 
+    Node, Edge, OnNodesChange, OnEdgesChange, OnConnect, Connection, OnConnectStartParams
 } from '@xyflow/react'
+
+type StartType = 'source' | 'target' | null;
 
 type FlowStore = {
   nodes: Node[];
@@ -13,22 +15,48 @@ type FlowStore = {
   setEdges: (edges: Edge[]) => void;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
-  onConnect: OnConnect;
+  connectStartType: StartType;
+  onConnectStart: (e: MouseEvent | TouchEvent, p: OnConnectStartParams) => void;
+  onConnect: (params: Connection) => void;
 };
+
+const withArrow = (edges: Edge[]): Edge[] => 
+    edges.map((e) => ({
+        ...e,
+        markerEnd: e.markerEnd ?? { type: MarkerType.ArrowClosed}
+    }));
 
 export const useFlowStore = create<FlowStore>((set, get) => ({
   nodes: [],
   edges: [],
   setNodes: (nodes) => set({ nodes }),
-  setEdges: (edges) => set({ edges }),
+  setEdges: (edges) => set({ edges: withArrow(edges) }),
   onNodesChange: (changes) => {
     set({ nodes: applyNodeChanges(changes, get().nodes) });
   },
   onEdgesChange: (changes) => {
-    set({ edges: applyEdgeChanges(changes, get().edges) });
+    const next = applyEdgeChanges(changes, get().edges);
+    set({ edges: withArrow(next)});
+  },
+
+  connectStartType: null,
+
+  onConnectStart: (_e, { handleType }) => {
+    set({ connectStartType: handleType ?? null });
   },
   onConnect: (params) => {
-    set({ edges: addEdge(params, get().edges) });
+    const startedAt = get().connectStartType;
+    const fixed =
+      startedAt === 'target'
+        ? { ...params, source: params.target!, target: params.source! }
+        : params;
+
+    set({
+      edges: withArrow(
+        addEdge({ ...fixed, markerEnd: { type: MarkerType.ArrowClosed } }, get().edges)
+      ),
+      connectStartType: null,
+    });
   },
 }));
 
