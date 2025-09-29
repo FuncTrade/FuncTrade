@@ -1,11 +1,10 @@
-import { Nav, Form } from "react-bootstrap";
-import { useClassStore, usePathStore } from "../store";
+import { Form } from "react-bootstrap";
+import { usePathStore } from "../store";
 import { useState } from "react";
 import { List } from "react-bootstrap-icons"; // Bootstrap Icons
 
 export default function LeftNav() {
-  const { classes, default_classes } = useClassStore();
-  const { class_path, pipeline_path, setClassPath, setPipelinePath } =
+  const { pipeline_path, setPipelinePath } =
     usePathStore();
 
   const [collapsed, setCollapsed] = useState(false);
@@ -19,73 +18,29 @@ export default function LeftNav() {
         zIndex: 10,
       }}
     >
-      {/* 顶部区域 */}
+      {/* top area */}
       <div className="p-2 border-bottom d-flex justify-content-between align-items-center">
         <button
           className="btn btn-sm btn-outline-secondary"
           onClick={() => setCollapsed(!collapsed)}
         >
-          <List /> {/* 小图标按钮 */}
+          <List /> {/* icon button */}
         </button>
-        {!collapsed && <span className="ms-2 fw-bold">Menu</span>}
+        {!collapsed && <span className="ms-2 fw-bold">Pipeline</span>}
       </div>
 
-      {/* 内容区 */}
+      {/* contents */}
       {!collapsed && (
         <div className="flex-grow-1 overflow-y-auto p-3">
-          <Form.Group className="mb-3">
-            <Form.Label>Class Path</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="输入 class 路径"
-              defaultValue={class_path}
-              onBlur={(e) => setClassPath(e.target.value)}
-            />
-          </Form.Group>
-
           <Form.Group className="mb-3">
             <Form.Label>Pipeline Path</Form.Label>
             <Form.Control
               type="text"
-              placeholder="输入 pipeline 路径"
+              placeholder="Enter the path of pipelines"
               defaultValue={pipeline_path}
               onBlur={(e) => setPipelinePath(e.target.value)}
             />
           </Form.Group>
-
-          <h5>Default Classes</h5>
-          <Nav className="flex-column">
-            {default_classes.map((item, idx) => (
-                <Nav.Link
-                    key={idx}
-                    href={`#${item}`}
-                    draggable
-                    onDragStart={(event) => {
-                        event.dataTransfer.setData('application/reactflow', item);
-                        event.dataTransfer.effectAllowed = 'move';
-                    }}
-                    >
-                    {item}
-                </Nav.Link>
-            ))}
-          </Nav>
-
-          <h5>Classes</h5>
-          <Nav className="flex-column">
-            {classes.map((item, idx) => (
-                <Nav.Link
-                    key={idx}
-                    href={`#${item}`}
-                    draggable
-                    onDragStart={(event) => {
-                        event.dataTransfer.setData('application/reactflow', item);
-                        event.dataTransfer.effectAllowed = 'move';
-                    }}
-                    >
-                    {item}
-                </Nav.Link>
-            ))}
-          </Nav>
         </div>
       )}
     </div>
