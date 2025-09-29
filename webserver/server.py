@@ -1,6 +1,6 @@
 from pathlib import Path
 from fastapi import FastAPI
-from webserver.parser.class_info import parse_py
+from webserver.parser.class_info import parse_py, ClassInfo
 from webserver.parser.pipeline import parse_pipeline
 from webserver.parser.base import search_target_dir
 from pydantic import BaseModel
@@ -14,16 +14,25 @@ app = FastAPI()
 
 
 @app.post('/api/parse_code')
-def parse_code(class_path: TargetPath):
-    input_path = pathlib.Path(class_path.path)
+def parse_code(path: TargetPath):
+    """
+    All ClassInfo should be in Default Class Folder
+    """
+    pipeline_path = pathlib.Path(path.path)
 
-    if not input_path.exists():
+    current_path = pathlib.Path(__file__).resolve()
+    function_path = current_path.parent.parent.joinpath('function')
+    default_classes: List[ClassInfo] = []
+
+    for p in search_target_dir(function_path):
+        default_classes.extend(parse_py(p))
+
+    if not pipeline_path.exists():
         return {"error": "Path not exists"}
 
-    class_list = parse_py(input_path)
-    class_names = [{"class": c.qualname} for c in class_list]
+    class_names = [{"class": c.qualname} for c in default_classes]
 
-    edges = parse_pipeline(input_path).edges
+    edges = parse_pipeline(pipeline_path).edges
 
     return {"classes": class_names, "edges": edges}
 
@@ -31,7 +40,7 @@ def parse_code(class_path: TargetPath):
 def get_default_classes() -> Dict:
     current_path = pathlib.Path(__file__).resolve()
     function_path = current_path.parent.parent.joinpath('function')
-    default_classes = []
+    default_classes: List[ClassInfo] = []
 
     for p in search_target_dir(function_path):
         default_classes.extend(parse_py(p))
