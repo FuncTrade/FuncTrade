@@ -78,9 +78,13 @@ type PathStore = {
   default_class_path: string;
   class_path: string;
   pipeline_path: string;
+  pipeline_dir: string;
+  pipeline_paths: string[];
   setDefaultClassPath: (path: string) => void;
   setClassPath: (path: string) => void;
   setPipelinePath: (path: string) => void;
+  setPipelineDir: (path: string) => void;
+  setPipelinePaths: (list: string[]) => void;
 }
 
 export const usePathStore = create<PathStore>()(
@@ -89,8 +93,12 @@ export const usePathStore = create<PathStore>()(
     default_class_path: "",
     class_path: "",
     pipeline_path: "",
+    pipeline_dir: "",
+    pipeline_paths: [],
     setClassPath: (path) => {set({class_path: path})},
     setPipelinePath: (path) => {set({pipeline_path: path})},
+    setPipelinePaths: (list) => {set({pipeline_paths: list})},
+    setPipelineDir: (path) => {set({pipeline_dir: path})},
     setDefaultClassPath: (path) => {set({default_class_path: path})},
   }),
   {

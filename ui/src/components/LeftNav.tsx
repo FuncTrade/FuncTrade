@@ -1,10 +1,10 @@
-import { Form } from "react-bootstrap";
+import { Form, Nav } from "react-bootstrap";
 import { usePathStore } from "../store";
 import { useState } from "react";
 import { List } from "react-bootstrap-icons"; // Bootstrap Icons
 
 export default function LeftNav() {
-  const { pipeline_path, setPipelinePath } =
+  const { pipeline_dir, setPipelineDir, pipeline_paths } =
     usePathStore();
 
   const [collapsed, setCollapsed] = useState(false);
@@ -37,10 +37,22 @@ export default function LeftNav() {
             <Form.Control
               type="text"
               placeholder="Enter the path of pipelines"
-              defaultValue={pipeline_path}
-              onBlur={(e) => setPipelinePath(e.target.value)}
+              defaultValue={pipeline_dir}
+              onBlur={(e) => setPipelineDir(e.target.value)}
             />
           </Form.Group>
+
+          <h5>Default Classes</h5>
+          <Nav className="flex-column">
+            {pipeline_paths.map((name) => (
+                <Nav.Link
+                    key={name}
+                    href={`#${name}`}
+                    >
+                    {name}
+                </Nav.Link>
+            ))}
+          </Nav>
         </div>
       )}
     </div>

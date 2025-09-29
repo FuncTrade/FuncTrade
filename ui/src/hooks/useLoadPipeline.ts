@@ -4,7 +4,6 @@ import { useFlowStore, useClassStore, usePathStore } from '../store';
 
 export function useLoadPipeline() {
   const { pipeline_path } = usePathStore();
-
   const { setNodes, setEdges } = useFlowStore();
   const { setClasses } = useClassStore();
 

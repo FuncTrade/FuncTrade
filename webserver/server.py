@@ -7,14 +7,14 @@ from pydantic import BaseModel
 import pathlib
 from typing import Dict, List
 
-class ClassPath(BaseModel):
+class TargetPath(BaseModel):
     path: str
 
 app = FastAPI()
 
 
 @app.post('/api/parse_code')
-def parse_code(class_path: ClassPath):
+def parse_code(class_path: TargetPath):
     input_path = pathlib.Path(class_path.path)
 
     if not input_path.exists():
@@ -39,6 +39,17 @@ def get_default_classes() -> Dict:
     class_names = [{"class": c.qualname} for c in default_classes]
 
     return {"default_classes": class_names}
+
+@app.post('/api/list_pipeline')
+def list_pipeline(dir_path: TargetPath) -> Dict:
+    input_path = pathlib.Path(dir_path.path)
+
+    if not input_path.exists():
+        return {"error": "Path not exists"}
+    
+    pipeline_names = [{"pipeline": p.stem} for p in search_target_dir(input_path) if not p.stem.startswith("_")]
+    
+    return {"pipelines": pipeline_names}
 
 
 
