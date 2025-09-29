@@ -19,9 +19,7 @@ export function usePipelineDir() {
     })
       .then((res) => res.json())
       .then((data: {pipelines: { pipeline: string}[]}) => {
-        console.log(data)
         const names = data.pipelines.map((item) => item.pipeline);
-        console.log(names)
         setPipelinePaths(names);
       })
       .catch((err) => console.error('Failed loading pipeline', err));

@@ -1,21 +1,20 @@
 // hooks/useLoadPipeline.ts
-import { useEffect } from 'react';
-import { useFlowStore, useClassStore, usePathStore } from '../store';
+import { useCallback } from 'react';
+import { useFlowStore, useClassStore } from '../store';
 
 export function useLoadPipeline() {
-  const { pipeline_path } = usePathStore();
   const { setNodes, setEdges } = useFlowStore();
   const { setClasses } = useClassStore();
 
-  useEffect(() => {
-    const path = pipeline_path;
+  const loadPipeline = useCallback(async (dir_path: string, file_path: string) => {
+      const path = dir_path + '\\' + file_path + '.py'
 
-    if (path == undefined || path.trim() == "") return
+      if (path == undefined || path.trim() == "") return
 
-    fetch('/api/parse_code', {
+      fetch('/api/parse_code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ path }),
+      body: JSON.stringify({ path: path }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -36,5 +35,7 @@ export function useLoadPipeline() {
         setClasses(data.classes.map((c: {class: string}) => c.class));
       })
       .catch((err) => console.error('Failed loading pipeline', err));
-  }, [pipeline_path, setNodes, setEdges, setClasses]);
+    }, [])
+
+  return {loadPipeline}
 }

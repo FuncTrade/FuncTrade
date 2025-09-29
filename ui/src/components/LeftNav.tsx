@@ -2,11 +2,13 @@ import { Form, Nav } from "react-bootstrap";
 import { usePathStore } from "../store";
 import { useState } from "react";
 import { List } from "react-bootstrap-icons"; // Bootstrap Icons
+import { useLoadPipeline } from "../hooks/useLoadPipeline";
 
 export default function LeftNav() {
   const { pipeline_dir, setPipelineDir, pipeline_paths } =
     usePathStore();
 
+  const { loadPipeline } = useLoadPipeline();
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -42,12 +44,13 @@ export default function LeftNav() {
             />
           </Form.Group>
 
-          <h5>Default Classes</h5>
+          <h5>Pipeline Files</h5>
           <Nav className="flex-column">
             {pipeline_paths.map((name) => (
                 <Nav.Link
                     key={name}
                     href={`#${name}`}
+                    onClick={() => loadPipeline(pipeline_dir, name)}
                     >
                     {name}
                 </Nav.Link>
