@@ -11,7 +11,7 @@ export function useLoadPipeline() {
 
       if (path == undefined || path.trim() == "") return
 
-      fetch('/api/parse_code', {
+      fetch('/api/parse_code_new', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: path }),

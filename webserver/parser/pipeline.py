@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from webserver.parser.base import parse_file_to_tree
 
 
@@ -6,7 +6,7 @@ import ast
 from pathlib import Path
 
 
-def get_var_class(n: ast.AST, mapping: dict):
+def get_var_class(n: ast.AST, mapping: dict[str, str]) -> Optional[str]:
     """get classname from variable"""
     if isinstance(n, ast.Name):
         return mapping.get(n.id)

@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from webserver.parser.class_info import parse_py, ClassInfo
 from webserver.parser.pipeline import parse_pipeline
 from webserver.parser.base import search_target_dir
+from webserver.parser.parser import parse_pipeline_new, NotationPipe
 from pydantic import BaseModel
 import pathlib
 from typing import Dict, List
@@ -33,6 +34,24 @@ def parse_code(path: TargetPath):
     class_names = [{"class": c.qualname} for c in default_classes]
 
     edges = parse_pipeline(pipeline_path).edges
+
+    return {"classes": class_names, "edges": edges}
+
+@app.post('/api/parse_code_new')
+def parse_code_new(path: TargetPath):
+    """
+    All ClassInfo should be in Default Class Folder
+    """
+    pipeline_path = pathlib.Path(path.path)
+    
+    if not pipeline_path.exists():
+        return {"error": "Path not exists"}
+    
+    notation_pipe = parse_pipeline_new(pipeline_path)
+
+    class_names = [{"class": i} for i in notation_pipe.exec_instances]
+
+    edges = notation_pipe.exec_orders
 
     return {"classes": class_names, "edges": edges}
 
