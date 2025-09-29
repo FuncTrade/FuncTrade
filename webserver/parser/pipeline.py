@@ -7,15 +7,15 @@ from pathlib import Path
 
 
 def get_var_class(n: ast.AST, mapping: dict):
-    """从变量映射拿类名"""
+    """get classname from variable"""
     if isinstance(n, ast.Name):
         return mapping.get(n.id)
     elif isinstance(n, ast.Call) and isinstance(n.func, ast.Name):
-        return n.func.id  # 直接类名
+        return n.func.id  # Class Name
     return None
 
 
-class Pipeline:
+class NotationPipeline:
     edges: List[Tuple]
 
     def __init__(self):
@@ -27,21 +27,21 @@ class Pipeline:
     def __repr__(self):
         return f"Pipeline(edges={self.edges})"
 
-def parse_pipeline(path: Path) -> Pipeline:
-    pipe = Pipeline()
+def parse_pipeline(path: Path) -> NotationPipeline:
+    pipe = NotationPipeline()
     tree = parse_file_to_tree(path)
 
-    # 1. 收集变量 -> 类名的映射
+    # 1. collect variable -> class mapping
     var_to_class = {}
     for node in tree.body:
         if isinstance(node, ast.Assign) and isinstance(node.value, ast.Call):
-            if isinstance(node.value.func, ast.Name):  # 例子: t1 = TaskA()
+            if isinstance(node.value.func, ast.Name):  # e.g: t1 = TaskA()
                 class_name = node.value.func.id
                 for target in node.targets:
                     if isinstance(target, ast.Name):
                         var_to_class[target.id] = class_name
 
-    # 2. 收集位运算依赖
+    # 2. collect byte calculation dependency
     for node in ast.walk(tree):
         if isinstance(node, ast.BinOp) and isinstance(node.op, (ast.RShift, ast.LShift)):
             left = get_var_class(node.left, var_to_class)

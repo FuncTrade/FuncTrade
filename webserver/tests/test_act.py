@@ -1,18 +1,21 @@
 from unittest import TestCase
 from function.act import SingleTickerDailyCloseDataGenerator, DataListCache
 from base_function.data import NoData, Data, DataList
+from base_function.base import Pipeline
 import datetime
 
 
 class TestSingleTickerDailyCloseDataGenerator(TestCase):
     def test_aapl_hist(self):
-        generator = SingleTickerDailyCloseDataGenerator(start_at='20100101', end_at='20250801', ticker='AAPL')
+        pipe = Pipeline()
+        generator = SingleTickerDailyCloseDataGenerator(start_at='20100101', end_at='20250801', ticker='AAPL', pipeline=pipe)
         first_result = generator.process(NoData())
         self.assertEqual(first_result, Data(timestamp=datetime.datetime(2010,1,4,0,0), ticker='AAPL', label='Close', value=-1.599))
 
 class TestDataCache(TestCase):
     def test_cache_data(self):
-        data_cache = DataListCache(10)
+        pipe = Pipeline()
+        data_cache = DataListCache(10, pipeline=pipe)
 
         for i in range(9):
             mock_data = Data(datetime.datetime.now(), 'Mock', 'Mock Label', i)

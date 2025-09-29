@@ -28,7 +28,7 @@ class TestParseInstances(TestCase):
                 "name": "ma_example",
                 "classname": "MACalculator",
                 "init_args": {"label": "str"},
-                "init_values": ["'ma_example'"]
+                "init_values": ["'ma_example'", 'pipeline=pipe']
             }
         )
 
@@ -38,6 +38,6 @@ class TestParseInstances(TestCase):
                 "name": "ma_example2",
                 "classname": "MACalculator",
                 "init_args": {"label": "str"},
-                "init_values": ["label='ma_example2'"]
+                "init_values": ["label='ma_example2'", 'pipeline=pipe']
             }
         )

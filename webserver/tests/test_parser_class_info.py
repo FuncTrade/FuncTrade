@@ -21,7 +21,7 @@ class TestParsePyClassInfo(TestCase):
                 cls_info.to_info_dict(),
                 {
                     "classname": "MACalculator",
-                    "init_args": {"label": "str"}
+                    "init_args": {"label": "str", "pipeline": "Pipeline"}
                 }
             )
         else:
@@ -39,6 +39,6 @@ class TestParsePyClassInfo(TestCase):
             result[0].to_info_dict(),
             {
                 "classname": "MACalculator",
-                "init_args": {"label": "str"}
+                "init_args": {"label": "str", "pipeline": "Pipeline"}
             }
         )

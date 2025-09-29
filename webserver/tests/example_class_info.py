@@ -1,4 +1,4 @@
-from base_function.base import GenericCalculator
+from base_function.base import GenericCalculator, Pipeline
 from base_function.data import Data, DataList
 
 
@@ -6,7 +6,8 @@ class MACalculator(GenericCalculator[DataList, Data]):
     label: str
     accepted_types = (DataList,)
 
-    def __init__(self, label: str) -> None:
+    def __init__(self, label: str, pipeline: Pipeline) -> None:
+        super().__init__(pipeline)
         self.label = label
 
     def process(self, input: DataList) -> Data:

@@ -16,10 +16,10 @@ class GenericTask(Generic[InputT, OutputT]):
         self.pipeline = pipeline
     
     def __rshift__(self, other: 'GenericTask') -> None:
-        return self.pipeline.add_edge(self, other)
+        self.pipeline.add_edge(self, other)
 
     def __lshift__(self, other: 'GenericTask') -> None:
-        return self.pipeline.add_edge(other, self)
+        self.pipeline.add_edge(other, self)
 
     @abstractmethod
     def process(self, input: InputT) -> OutputT:
