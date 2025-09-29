@@ -10,12 +10,17 @@ OutputT = TypeVar("OutputT")
 
 class GenericTask(Generic[InputT, OutputT]):
     accepted_types: tuple[type, ...] = (object,)
-    # def __rshift__(self, other) -> 'Pipeline':
-    #     return Pipeline([self, other])
-
-    # def __lshift__(self, other) -> 'Pipeline':
-    #     return Pipeline([other, self])
+    pipeline: "Pipeline"
     
+    def __init__(self, pipeline: "Pipeline") -> None:
+        self.pipeline = pipeline
+    
+    def __rshift__(self, other: 'GenericTask') -> None:
+        return self.pipeline.add_edge(self, other)
+
+    def __lshift__(self, other: 'GenericTask') -> None:
+        return self.pipeline.add_edge(other, self)
+
     @abstractmethod
     def process(self, input: InputT) -> OutputT:
         raise NotImplementedError

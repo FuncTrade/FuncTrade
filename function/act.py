@@ -5,7 +5,7 @@ from abc import abstractmethod
 from typing import Any, List, Union, Dict
 
 from base_function.data import GenericData
-from ..base_function.base import GenericActor, GenericSourceTask
+from base_function.base import GenericActor, GenericSourceTask, Pipeline
 import datetime
 import akshare as ak
 from collections import deque
@@ -14,10 +14,11 @@ from collections import deque
 class SingleTickerDailyCloseDataGenerator(GenericActor[NoData, Union[NoData, Data]], GenericSourceTask):
     _records: List[Data]
 
-    def __init__(self, start_at: str, end_at: str, ticker: str) -> None:
+    def __init__(self, start_at: str, end_at: str, ticker: str, pipeline: Pipeline) -> None:
         """
         start_at, end_at: %Y%m%d
         """
+        super().__init__(pipeline)
 
         symbol = '105.' + ticker
         stock_us_hist_df = ak.stock_us_hist(symbol=symbol, period="daily", start_date=start_at, end_date=end_at, adjust="qfq")
@@ -44,7 +45,8 @@ class DataListCache(GenericActor[Data, Union[DataList, NoData]]):
     _deque: deque
     _max_length: int
 
-    def __init__(self, max_length: int) -> None:
+    def __init__(self, max_length: int, pipeline: Pipeline) -> None:
+        super().__init__(pipeline)
         self._deque = deque([], maxlen=max_length)
         self._max_length = max_length
     
@@ -59,7 +61,8 @@ class DataDictCache(GenericActor[Data, Union[DataDict, NoData]]):
     data_dict: Dict[str, deque]
     len_dict: Dict[str, int]
 
-    def __init__(self, len_dict: Dict[str, int]) -> None:
+    def __init__(self, len_dict: Dict[str, int], pipeline: Pipeline) -> None:
+        super().__init__(pipeline)
         self.len_dict = len_dict.copy()
         self.data_dict = {k: deque(maxlen=len_dict[k]) for k in len_dict.keys()}
     
@@ -80,7 +83,8 @@ class TradeLogger(GenericActor):
     signal: List[Signal]
     accepted_types = (Data, DataList, Signal)
 
-    def __init__(self) -> None:
+    def __init__(self, pipeline: Pipeline) -> None:
+        super().__init__(pipeline)
         self.data = []
         self.signal = []
 
