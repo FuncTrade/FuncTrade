@@ -1,6 +1,6 @@
 from unittest import TestCase
 from function.calculate import MACalculator
-from function.data import Data, DataList
+from base_function.data import Data, DataList
 import datetime
 
 

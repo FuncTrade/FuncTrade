@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from function.data import Data, DataList, Signal, NoData, DataDict
+from base_function.data import Data, DataList, Signal, NoData, DataDict
 from abc import abstractmethod
 from typing import Any, List, Union, Dict
 
-from function.data import GenericData
-from .base import GenericActor, GenericSourceTask
+from base_function.data import GenericData
+from ..base_function.base import GenericActor, GenericSourceTask
 import datetime
 import akshare as ak
 from collections import deque

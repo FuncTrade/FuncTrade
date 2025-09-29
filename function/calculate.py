@@ -1,5 +1,5 @@
-from function.base import GenericCalculator
-from function.data import DataList, Data, Signal, NoData, DataDict
+from base_function.base import GenericCalculator
+from base_function.data import DataList, Data, Signal, NoData, DataDict
 from typing import Union
 
 

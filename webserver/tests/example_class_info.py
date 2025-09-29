@@ -1,5 +1,5 @@
-from function.base import GenericCalculator
-from function.data import Data, DataList
+from base_function.base import GenericCalculator
+from base_function.data import Data, DataList
 
 
 class MACalculator(GenericCalculator[DataList, Data]):

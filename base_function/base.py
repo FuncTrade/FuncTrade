@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from typing import Tuple, TypeVar, Generic, List, Union, Dict
-from function.data import NoData, GenericData
+from base_function.data import NoData, GenericData
 from collections import deque, defaultdict
 import logging
 

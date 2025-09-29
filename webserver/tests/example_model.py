@@ -1,4 +1,4 @@
-from function.base import GenericTask
+from base_function.base import GenericTask
 
 class DataFeed(GenericTask):
     pass

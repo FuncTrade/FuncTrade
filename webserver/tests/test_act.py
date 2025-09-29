@@ -1,6 +1,6 @@
 from unittest import TestCase
 from function.act import SingleTickerDailyCloseDataGenerator, DataListCache
-from function.data import NoData, Data, DataList
+from base_function.data import NoData, Data, DataList
 import datetime
 
 
