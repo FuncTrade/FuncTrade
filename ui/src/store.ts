@@ -19,9 +19,7 @@ type FlowStore = {
   onConnectStart: (e: MouseEvent | TouchEvent, p: OnConnectStartParams) => void;
   onConnect: (params: Connection) => void;
   currentPipeline?: string;                       // the id/name of pipeline currently opened
-  layoutRanFor: Record<string, boolean>;         // flags: pipelineId -> has auto-layout run
   setCurrentPipeline: (name: string) => void;    // set current pipeline (call on open)
-  markLayoutRan: (name: string) => void;         // mark that auto-layout has executed for this pipeline
 };
 
 const withArrow = (edges: Edge[]): Edge[] => 
@@ -43,11 +41,8 @@ export const useFlowStore = create<FlowStore>((set, get) => ({
     set({ edges: withArrow(next)});
   },
   currentPipeline: undefined,
-  layoutRanFor: {},
 
   setCurrentPipeline: (name: string) => set(() => ({ currentPipeline: name })),
-  markLayoutRan: (name: string) =>
-    set((s) => ({ layoutRanFor: { ...s.layoutRanFor, [name]: true } })),
 
   connectStartType: null,
 
