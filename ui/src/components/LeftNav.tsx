@@ -46,6 +46,7 @@ export default function LeftNav() {
 
           <h5>Pipeline Files</h5>
           <Nav className="flex-column">
+            {pipeline_paths.length === 0 && <span className="text-muted">(empty)</span>}
             {pipeline_paths.map((name) => (
                 <Nav.Link
                     key={name}

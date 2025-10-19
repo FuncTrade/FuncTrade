@@ -1,12 +1,13 @@
 // comments in English
 import React, { useEffect, useCallback } from 'react';
-import { ReactFlow, useReactFlow } from '@xyflow/react';
+import { Background, ReactFlow, useReactFlow, BackgroundVariant } from '@xyflow/react';
 import dagre from '@dagrejs/dagre';
 import { useFlowStore } from '../store';
+import type { Node, Edge } from '@xyflow/react'
 
 const W = 180, H = 40;
 
-function layoutLR(nodes: any[], edges: any[]) {
+function layoutLR(nodes: Node[], edges: Edge[]) {
   const g = new dagre.graphlib.Graph();
   g.setGraph({ rankdir: 'LR', nodesep: 30, ranksep: 60, marginx: 20, marginy: 20 });
   g.setDefaultEdgeLabel(() => ({}));
@@ -26,7 +27,25 @@ export default function FlowArea() {
     currentPipeline, layoutRanFor, markLayoutRan,
   } = useFlowStore(s => s);
 
-  const { fitView } = useReactFlow();
+  const { fitView, screenToFlowPosition } = useReactFlow();
+
+  const getId = () => `node_${+new Date()}`;
+
+  const onDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  };
+
+  const onDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    const name = event.dataTransfer.getData('application/reactflow');
+    if (!name) return;
+
+    const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+    const newNode = { id: getId(), position, data: { label: name } };
+
+    setNodes([...nodes, newNode]);
+  };
 
   const runOnce = useCallback(() => {
     if (!currentPipeline) return;
@@ -42,10 +61,21 @@ export default function FlowArea() {
 
   return (
     <ReactFlow
-      nodes={nodes} edges={edges}
-      onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}
-      onConnect={onConnect} onConnectStart={onConnectStart}
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      onConnectStart={onConnectStart}
+      onDrop={onDrop}
+      onDragOver={onDragOver}
       fitView deleteKeyCode={['Delete','Backspace']}
-    />
+    >
+        <Background
+            variant={BackgroundVariant.Dots}
+            gap={15}
+            size={1}
+        />
+    </ReactFlow>
   );
 }
