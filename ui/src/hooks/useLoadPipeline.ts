@@ -3,11 +3,12 @@ import { useCallback } from 'react';
 import { useFlowStore, useClassStore } from '../store';
 
 export function useLoadPipeline() {
-  const { setNodes, setEdges } = useFlowStore();
+  const { setNodes, setEdges, setCurrentPipeline } = useFlowStore();
   const { setClasses } = useClassStore();
 
   const loadPipeline = useCallback(async (dir_path: string, file_path: string) => {
-      const path = dir_path + '\\' + file_path + '.py'
+      const path = dir_path + '\\' + file_path + '.py';
+      setCurrentPipeline(file_path);
 
       if (path == undefined || path.trim() == "") return
 
